@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+</head>
+
+<body>
+    <h1>Socket Io - Hello World!</h1>
+    <div id="future"></div>
+    <form id="form" id="chat_form">
+        <input id="chat_input" type="text">
+        <input id="sendButton" type="button" value="Send">
+    </form>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Establish connection with server
+            var socket = io.connect('http://localhost:9090');
+
+            // Send msg to server
+            socket.on('connect', function (data) {
+                socket.emit('join', 'Hello World from client');
+            });
+
+            // Receiving msg from server
+            socket.on('msg', function (data) {
+                alert("msg sent from client was " + data);
+            });
+
+            $('#sendButton').click(function () {
+
+                // Send msg to server
+                socket.emit('msg', $('#chat_input').val());
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>

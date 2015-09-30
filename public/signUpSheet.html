@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+</head>
+
+<body>
+    <h1>Socket Io - Player Sign Up Sheet</h1>
+    <div id="future"></div>
+    <form id="form" id="signup_form">
+        Player Name:
+        <input id="playerName" type="text">
+        <input id="signUpButton" type="button" value="Sign Up">
+    </form>
+
+
+    <h3>Committed Players:</h3>
+    <ol id="playerList">
+        <li>Kobe</li>
+
+    </ol>
+
+
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // Establish connection with server
+            var socket = io.connect('http://localhost:9090');
+
+
+            // Receiving msg from server
+            socket.on('signUp', function (data) {
+                //alert(data + " will be added to the sign up sheet.");
+                $('#playerList').append('<li>' + data + '</li>');
+            });
+
+            $('#signUpButton').click(function () {
+
+                var playerIsValid = true;
+                
+                // validate player is not on already list
+                $("li").each(function (index) {
+                    console.log(index + ": " + $(this).text().toUpperCase());
+                    if ($('#playerName').val().toUpperCase() == $(this).text().toUpperCase()) {
+                        alert('Player is already signed up!');
+                        playerIsValid = false;
+                    }
+                                            
+                });
+
+                if (playerIsValid){
+                    // Send msg to server
+                    socket.emit('signUp', $('#playerName').val());
+                }
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
