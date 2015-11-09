@@ -18,7 +18,7 @@
     <script>
         $(document).ready(function () {
             // Establish connection with server
-            var socket = io.connect('http://localhost:9090');
+            var socket = io.connect('http://localhost:8080');
 
             // Send msg to server
             socket.on('connect', function (data) {
